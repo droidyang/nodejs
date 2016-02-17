@@ -1,62 +1,107 @@
 <!doctype html>
 <html>
 <head>
-<title> socket io chat service</title>
+<title>socket io chat service</title>
 <style>
-* {margin:0;padding:0;box-sizing:border-box;}
-body {font:13px Helvetica,Arial;}
-form {background:#000;padding:3px;position:relative;bottom:0;width:100%;}
-form input {border:0;padding:10px;width:80%;margin-right:.5%;}
-form button {width:9%;background:rgb(130,224,255);border:none;padding:10px;float:right;}
-#messages {list-style-type:none;margin:0;padding:0;}
-#messages li {padding:5px 10px;}
-#messages li:nth-child(odd) { background: #eee; }
-.input {width:100%;bottom:0;position:fixed;}
-.output {width:100%;}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font: 13px Helvetica, Arial;
+}
+
+form {
+	background: #000;
+	padding: 3px;
+	position: relative;
+	bottom: 0;
+	width: 100%;
+}
+
+form input {
+	border: 0;
+	padding: 10px;
+	width: 80%;
+	margin-right: .5%;
+}
+
+form button {
+	width: 9%;
+	background: rgb(130, 224, 255);
+	border: none;
+	padding: 10px;
+	float: right;
+}
+
+#messages {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#messages li {
+	padding: 5px 10px;
+}
+
+#messages li:nth-child(odd) {
+	background: #eee;
+}
+
+.input {
+	width: 100%;
+	bottom: 0;
+	position: fixed;
+}
+
+.output {
+	width: 100%;
+}
 </style>
 </head>
 <body>
-<div class="main">
-<div class="output">
-<ul id="messages"></ul>
-</div>
-<div class="input" >
-<form action="">
-	<input id="m" autocomplete="off" />
-	<button>send </button>
-	</form>
-</div>
-</div>
-<script src="/socket.io/socket.io.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-<script>
-	setCookie("auth","password",1);
-	var socket=io();
-	
-	$('form').submit(function(){
-	socket.emit('chat message',$('#m').val());
-	$('#m').val('');
-	return false;
-	});
+	<div class="main">
+		<div class="output">
+			<ul id="messages"></ul>
+		</div>
+		<div class="input">
+			<form action="">
+				<input id="m" autocomplete="off" />
+				<button>send</button>
+			</form>
+		</div>
+	</div>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script>
+		setCookie("auth", "password", 1);
+		
+		var socket = io();
 
-	socket.on('chat message',function(msg){
-		$('#messages').append($('<li>').text(msg));
+		$('form').submit(function() {
+			socket.emit('chat message', $('#m').val());
+			$('#m').val('');
+			return false;
 		});
-	
 
-	function setCookie(name, value, hours) {
-		var str = name + "=" + unescape(value);
-		if (hours > 0) {
-			var date = new Date();
-			var ms = hours * 3600 * 1000;
-			date.setTime(date.getTime() + ms);
-			str += "; expires=" + date.toGMTString();
+		socket.on('chat message', function(msg) {
+			$('#messages').append($('<li>').text(msg));
+		});
+
+		function setCookie(name, value, hours) {
+			var str = name + "=" + unescape(value);
+			if (hours > 0) {
+				var date = new Date();
+				var ms = hours * 3600 * 1000;
+				date.setTime(date.getTime() + ms);
+				str += "; expires=" + date.toGMTString();
+			}
+			//str += "; domain=.zuk.com; path=/";
+			document.cookie = str;
 		}
-		//str += "; domain=.zuk.com; path=/";
-		document.cookie = str;
-	}
-	
-</script>
-	
-	</body>
-	</html>
+	</script>
+
+</body>
+</html>
